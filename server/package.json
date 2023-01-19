@@ -1,0 +1,11 @@
+{
+  "name": "habits-server",
+  "version": "0.0.1",
+  "description": "HTTP server for habits application.",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsx"
+  },
+  "author": "Paula Rolim",
+  "license": "ISC"
+}
