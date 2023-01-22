@@ -1,5 +1,4 @@
 import { Plus } from "phosphor-react";
-import logo from "../../assets/logo.svg";
 import { Header } from "./components/Header";
 import { SummaryTable } from "./components/SummaryTable";
 
