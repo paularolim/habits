@@ -8,7 +8,7 @@ import colors from "tailwindcss/colors";
 export function Header() {
   return (
     <SafeAreaView>
-      <View className="flex-row items-center justify-between px-5">
+      <View className="flex-row items-center justify-between px-8">
         <Logo />
 
         <TouchableOpacity
