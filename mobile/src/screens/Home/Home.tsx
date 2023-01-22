@@ -1,5 +1,5 @@
-import { Text, View } from "react-native";
-import { daySize, Habit, Header } from "../../components";
+import { View } from "react-native";
+import { Header } from "../../components";
 import { SummaryTable } from "./components/SummaryTable";
 
 export function Home() {
