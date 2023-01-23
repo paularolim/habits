@@ -1,6 +1,7 @@
 import { Check } from "phosphor-react";
 import { FormEvent, useCallback, useState } from "react";
 import { CheckBox } from "../../../../components";
+import { httpClient } from "../../../../services/HttpClient";
 
 const availableWeekDays = [
   "Domingo",
@@ -24,10 +25,20 @@ export function HabitForm() {
     }
   }, []);
 
-  const handleCreateHabit = (event: FormEvent) => {
+  const handleCreateHabit = async (event: FormEvent) => {
     event.preventDefault();
-    console.log("title", title);
-    console.log("weekDays", weekDays);
+
+    if (!title || weekDays.length === 0) return;
+
+    await httpClient.post("/habits", {
+      title,
+      weekDays,
+    });
+
+    setTitle("");
+    setWeekDays([]);
+
+    alert(`Hábito '${title}' criado com sucesso`);
   };
 
   return (
@@ -42,6 +53,7 @@ export function HabitForm() {
         placeholder="Exercícios, dormir bem, etc..."
         autoFocus
         className="p-4 rounded-lg mt-3 bg-zinc-800 text-white placeholder:text-zinc-400"
+        value={title}
         onChange={(event) => setTitle(event.target.value)}
       />
 
@@ -51,7 +63,11 @@ export function HabitForm() {
 
       {availableWeekDays.map((day, index) => (
         <div key={day} className="mt-2 flex flex-col gap-3">
-          <CheckBox label={day} onCheckedChange={() => handleToggleWeekDay(index)} />
+          <CheckBox
+            label={day}
+            onCheckedChange={() => handleToggleWeekDay(index)}
+            checked={weekDays.includes(index)}
+          />
         </div>
       ))}
 
