@@ -1,3 +1,5 @@
+import "./src/functions/dayjs";
+
 import {
   useFonts,
   Inter_400Regular,
