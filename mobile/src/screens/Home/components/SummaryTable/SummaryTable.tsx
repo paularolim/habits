@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import { useCallback } from "react";
 import { FlatList, ListRenderItemInfo, Text, View } from "react-native";
 import { Habit } from "../../../../components";
@@ -6,6 +7,8 @@ import { itemMargin, itemSize, itemSizeWithMargin } from "./styles";
 import { SummaryDate } from "./types";
 
 export function SummaryTable() {
+  const { navigate } = useNavigation();
+
   const Header = useCallback(
     () => (
       <View className="flex-row bg-background">
@@ -25,7 +28,11 @@ export function SummaryTable() {
 
   const Item = useCallback(
     ({ item }: ListRenderItemInfo<SummaryDate>) => (
-      <Habit disabled={item.isFuture} style={{ width: itemSize, height: itemSize, margin: itemMargin }} />
+      <Habit
+        disabled={item.isFuture}
+        style={{ width: itemSize, height: itemSize, margin: itemMargin }}
+        onPress={() => navigate("dayHabit", { date: item.date?.toISOString() || "" })}
+      />
     ),
     []
   );
