@@ -1,13 +1,31 @@
 import { useNavigation } from "@react-navigation/native";
-import { useCallback } from "react";
+import dayjs from "dayjs";
+import { useCallback, useEffect, useState } from "react";
 import { FlatList, ListRenderItemInfo, Text, View } from "react-native";
 import { Habit } from "../../../../components";
+import { httpClient } from "../../../../services/HttpClient";
 import { data, weekDays } from "./data";
 import { itemMargin, itemSize, itemSizeWithMargin } from "./styles";
-import { SummaryDate } from "./types";
+import { SummaryDate, SummaryProps } from "./types";
 
 export function SummaryTable() {
   const { navigate } = useNavigation();
+
+  const [summary, setSummary] = useState<SummaryProps[]>([]);
+
+  const getSummary = () => {
+    httpClient
+      .get("/summary")
+      .then((response) => {
+        setSummary(response.data);
+      })
+      .catch((error) => {
+        console.error("Something went wrong");
+        console.error(error);
+      });
+  };
+
+  useEffect(getSummary, []);
 
   const Header = useCallback(
     () => (
@@ -27,14 +45,21 @@ export function SummaryTable() {
   );
 
   const Item = useCallback(
-    ({ item }: ListRenderItemInfo<SummaryDate>) => (
-      <Habit
-        disabled={item.isFuture}
-        style={{ width: itemSize, height: itemSize, margin: itemMargin }}
-        onPress={() => navigate("dayHabit", { date: item.date?.toISOString() || "" })}
-      />
-    ),
-    []
+    ({ item }: ListRenderItemInfo<SummaryDate>) => {
+      const dayInSummary = summary.find((day) => dayjs(item.date).isSame(day.date, "day"));
+
+      return (
+        <Habit
+          date={item.date as Date}
+          completed={dayInSummary?.completed}
+          amount={dayInSummary?.amount}
+          disabled={item.isFuture}
+          style={{ width: itemSize, height: itemSize, margin: itemMargin }}
+          onPress={() => navigate("dayHabit", { date: item.date?.toISOString() || "" })}
+        />
+      );
+    },
+    [summary]
   );
 
   return (
