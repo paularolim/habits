@@ -4,10 +4,8 @@ import * as Popover from "@radix-ui/react-popover";
 import { ProgressBar } from "../ProgressBar";
 
 import { HabitProps } from "./types";
-import { CheckBox } from "../CheckBox";
 import dayjs from "dayjs";
-
-const habits = ["2L de água", "Exercício", "Alimentação saudável", "Planejar próximo dia", "Dormir 8h"];
+import { HabitList } from "../HabitList";
 
 export function Habit({ completed = 0, amount = 0, date }: HabitProps) {
   const completedPercentage = amount > 0 ? Math.round((completed / amount) * 100) : 0;
@@ -35,11 +33,7 @@ export function Habit({ completed = 0, amount = 0, date }: HabitProps) {
 
           <ProgressBar progress={completedPercentage} />
 
-          {habits.map((habit, index) => (
-            <div key={habit} className="mt-2 flex flex-col gap-3">
-              <CheckBox label={habit} />
-            </div>
-          ))}
+          <HabitList date={date} />
 
           <Popover.Arrow className="fill-zinc-900" height={8} width={14} />
         </Popover.Content>
